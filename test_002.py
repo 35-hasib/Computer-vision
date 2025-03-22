@@ -48,22 +48,6 @@ def extract_features(image):
     return features
 
 # === Step 3: Save Background Features (Run Once) ===
-def save_background_features(background_folder, save_file='background_features.npy'):
-    all_files = os.listdir(background_folder)
-    background_image_paths = [
-        os.path.join(background_folder, file)
-        for file in all_files
-        if file.lower().endswith(('.jpg', '.jpeg', '.png'))
-    ]
-
-    print(f"Extracting features from {len(background_image_paths)} background images...")
-
-    background_features = [
-        extract_features(preprocess_image(path)) for path in background_image_paths
-    ]
-
-    np.save(save_file, background_features)
-    print(f"Background features saved to {save_file}.")
 
 # === Step 4: Load Background Features ===
 def load_background_features(save_file='background_features.npy'):
@@ -113,17 +97,13 @@ def face_verification(image1, image2, background_features, threshold=0.5):
 if __name__ == "__main__":
     try:
         # === 1. Preprocess query images ===
-        image1_path = "data_set/p1/p11.jpeg"
-        image2_path = "data_set/p1/p11.jpeg"
+        image1_path = "data_set/p3/p31.jpeg"
+        image2_path = "data_set/p3/p31.jpeg"
 
         image1 = preprocess_image(image1_path)
         image2 = preprocess_image(image2_path)
 
-        # === 2. (Optional) Save background features once ===
-        # Run this ONCE to generate the background feature file
-        # background_folder = "background_images"
-        # save_background_features(background_folder, save_file='background_features.npy')
-
+        
         # === 3. Load precomputed background features ===
         background_features = load_background_features('background_features.npy')
 
