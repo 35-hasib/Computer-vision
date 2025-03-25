@@ -12,7 +12,6 @@ def preprocess_image(image_path):
     if image is None:
         raise ValueError(f"Image not found at path: {image_path}")
 
-    # Resize the image (assuming face detection and alignment is already done)
     image = cv2.resize(image, (256, 256))
 
     # Apply Difference of Gaussians (DoG) filtering
@@ -26,13 +25,13 @@ def preprocess_image(image_path):
 def extract_features(image):
     # Gabor features
     gabor_features = []
-    for theta in range(8):  # 8 orientations
+    for theta in range(8):
         theta_rad = theta / 8. * np.pi
-        for sigma in (1, 3, 5, 7, 9):  # Different scales
+        for sigma in (1, 3, 5, 7, 9):
             freq = 0.6 / sigma
             gabor_real, gabor_imag = gabor(image, frequency=freq, theta=theta_rad)
-            gabor_features.append(np.mean(gabor_real))  # Mean of real part
-            gabor_features.append(np.mean(gabor_imag))  # Mean of imaginary part
+            gabor_features.append(np.mean(gabor_real))
+            gabor_features.append(np.mean(gabor_imag))
 
     # LBP features
     lbp = local_binary_pattern(image, P=8, R=1, method="uniform")
